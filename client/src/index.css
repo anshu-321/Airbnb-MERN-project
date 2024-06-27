@@ -7,7 +7,7 @@ input[type="password"],
 input[type="email"] {
   @apply w-full border my-2 py-2 px-3 rounded-2xl;
 }
-
+/* this is for button*/
 button {
   @apply bg-gray-300;
 }
