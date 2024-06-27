@@ -6,11 +6,13 @@ const mongoose = require("mongoose");
 const User = require("./models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "jff4nk23jebrfkjqb2ejb";
 
-app.use(express.json()); //used for parsing the JSON
+app.use(express.json());
+app.use(cookieParser()); //used for parsing the JSON
 app.use(
   //used for eliminating the CORS error
   cors({
@@ -52,7 +54,7 @@ app.post("/login", async (req, res) => {
         {},
         (err, token) => {
           if (err) throw err;
-          res.cookie("token", token).json("pass ok");
+          res.cookie("token", token).json(userDoc);
         }
       );
     } else {
@@ -60,6 +62,19 @@ app.post("/login", async (req, res) => {
     }
   } else {
     res.json("not found");
+  }
+});
+
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const { name, email, _id } = await User.findById(userData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
   }
 });
 
