@@ -90,11 +90,18 @@ function Placespage() {
             </button>
           </div>
 
-          <div className="mt-2 grid grid-cols-3 md:grid:cols-4 lg:grid-cols-6">
+          <div className="mt-2 grid grid-cols-3 md:grid:cols-4 lg:grid-cols-6 gap-2">
             {addedPhotos.length > 0 &&
-              addedPhotos.map((link) => <div>{link}</div>)}
+              addedPhotos.map((link) => (
+                <div>
+                  <img
+                    className="rounded-2xl"
+                    src={"http://localhost:4000/uploads/" + link}
+                  />
+                </div>
+              ))}
 
-            <button className="border bg-transparent text-2xl flex justify-center rounded-2xl p-4">
+            <button className="border bg-transparent text-2xl flex justify-center rounded-2xl p-4 items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
