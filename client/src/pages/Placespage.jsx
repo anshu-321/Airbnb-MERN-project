@@ -44,6 +44,24 @@ function Placespage() {
     setPhotoLink("");
   }
 
+  function uploadPhoto(ev) {
+    const files = ev.target.files;
+    const data = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      data.append("photos", files[i]);
+    }
+    axios
+      .post("/upload", data, {
+        headers: { "Content-type": "multipart/form-data" },
+      })
+      .then((response) => {
+        const { data: filenames } = response;
+        setAddedPhotos((prev) => {
+          return [...prev, ...filenames];
+        });
+      });
+  }
+
   return (
     <div>
       {action !== "new" && (
@@ -93,15 +111,21 @@ function Placespage() {
           <div className="mt-2 grid grid-cols-3 md:grid:cols-4 lg:grid-cols-6 gap-2">
             {addedPhotos.length > 0 &&
               addedPhotos.map((link) => (
-                <div>
+                <div className="h-32 flex">
                   <img
-                    className="rounded-2xl"
+                    className="rounded-2xl w-full object-cover "
                     src={"http://localhost:4000/uploads/" + link}
                   />
                 </div>
               ))}
 
-            <button className="border bg-transparent text-2xl flex justify-center rounded-2xl p-4 items-center">
+            <label className="border cursor-pointer bg-transparent text-2xl flex justify-center rounded-2xl p-4 items-center">
+              <input
+                type="file"
+                multiple
+                className="hidden"
+                onChange={uploadPhoto}
+              />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -116,7 +140,7 @@ function Placespage() {
                   d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
                 />
               </svg>
-            </button>
+            </label>
           </div>
 
           {preInput("Description", "Describe the place")}
