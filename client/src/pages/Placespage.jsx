@@ -17,7 +17,6 @@ function Placespage() {
       <AccountNav />
       {action !== "new" && (
         <div className="text-center">
-          list of all added places
           <br />
           <Link
             className="bg-primary text-white py-2 px-4 rounded-full "
@@ -30,16 +29,24 @@ function Placespage() {
       <div className="mt-4">
         {places.length > 0 &&
           places.map((place) => (
-            <div className="flex gap-4 bg-gray-200 p-4 rounded-2xl">
-              <div className="h-32 w-32 bg-gray-300">
+            <Link
+              to={"/account/places/" + place._id}
+              className="flex gap-4 cursor-pointer bg-gray-200 p-4 rounded-2xl "
+            >
+              <div className="flex w-32 h-32 bg-gray-300 ">
                 {place.photos.length > 0 && (
-                  <img src={place.photos[0]} alt="">
-                    {" "}
-                  </img>
+                  <img
+                    src={"http://localhost:4000/uploads/" + place.photos[0]}
+                    alt=""
+                    className="rounded-2xl w-full object-cover"
+                  />
                 )}
               </div>
-              <h2 className="text-xl ">{place.title}</h2>
-            </div>
+              <div className="">
+                <h2 className="text-xl ">{place.title}</h2>
+                <p className="text-sm mt-2 ">{place.description}</p>
+              </div>
+            </Link>
           ))}
       </div>
     </div>
