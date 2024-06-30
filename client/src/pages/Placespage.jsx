@@ -7,13 +7,13 @@ function Placespage() {
   const { action } = useParams();
   const [places, setPlaces] = useState([]);
   useEffect(() => {
-    axios.get("/places").then(({ data }) => {
+    axios.get("/user-places").then(({ data }) => {
       setPlaces(data);
     });
   }, []);
 
   return (
-    <div>
+    <div className="m-8">
       <AccountNav />
       {action !== "new" && (
         <div className="text-center">
@@ -31,7 +31,7 @@ function Placespage() {
           places.map((place) => (
             <Link
               to={"/account/places/" + place._id}
-              className="flex gap-4 cursor-pointer bg-gray-200 p-4 rounded-2xl "
+              className="mt-8 flex gap-4 cursor-pointer bg-gray-200 p-4 rounded-2xl "
             >
               <div className="flex w-32 h-32 bg-gray-300 ">
                 {place.photos.length > 0 && (
